@@ -1,0 +1,250 @@
+/* sudashboard.css */
+/* Terms of Service Display Section */
+.terms-display-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .section-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+  
+  .terms-display {
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .terms-display h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .terms-display p {
+    white-space: pre-wrap;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  
+  .terms-display textarea {
+    width: 100%;
+    max-width: 800px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical;
+    margin-bottom: 10px;
+  }
+  
+  .terms-display button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .terms-display button:hover {
+    background-color: #45a049;
+  }
+  
+  .terms-display button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* General Layout */
+  .superuser-dashboard-container {
+    padding: 2rem;
+    color: #333;
+  }
+  
+  .superuser-dashboard-main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  /* Loading Styles */
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  /* Error Styles */
+  .error-container {
+    background-color: #ffeeee;
+    padding: 2rem;
+    border: 1px solid #e0b4b4;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .error-heading {
+    font-size: 1.8rem;
+    color: #d9534f;
+  }
+  
+  .error-message {
+    font-size: 1.2rem;
+    color: #b94a48;
+  }
+  
+  .error-suggestion {
+    font-size: 1rem;
+    color: #a94442;
+  }
+  
+  /* User List Section */
+  .user-list-section {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #444;
+  }
+  
+  /* User Table */
+  .users-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .users-table thead {
+    background-color: #f0f0f0;
+  }
+  
+  .users-table th,
+  .users-table td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .users-table th {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .users-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .profile-picture {
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  /* Button Styles */
+  .view-details-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .view-details-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* User Details Modal */
+  .user-details-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .user-details-content {
+    background-color: #fff;
+    width: 90%;
+    max-width: 600px;
+    max-height: 700px;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow-y: auto;
+  }
+  
+  .user-details-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .user-details-header h2 {
+    font-size: 1.8rem;
+    margin: 1rem 0;
+  }
+  
+  .user-details-header p {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  /* Close Button */
+  .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  /* Purchases Table */
+  .purchases-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  
+  .purchases-table th,
+  .purchases-table td {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .purchases-table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .purchases-table tbody tr:nth-child(even) {
+    background-color: #fafafa;
+  }
