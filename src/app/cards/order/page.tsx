@@ -1,16 +1,11 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { apiClient } from '../../../utils/utils_storage';
+import { useRouter } from 'next/navigation';
 
 type CardType = 'CREDIT' | 'DEBIT';
-
-interface OrderNewCardProps {
-  isOpen: boolean;
-  setIsOrderCardModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-  onClose: () => void;
-}
 
 interface FormData {
   fullName: string;
@@ -24,7 +19,9 @@ interface FormData {
   agreeTerms: boolean;
 }
 
-const OrderNewCard: React.FC<OrderNewCardProps> = ({ isOpen, setIsOrderCardModalOpen, onClose }) => {
+const OrderNewCardPage: React.FC = () => {
+  const router = useRouter();
+  const [isOpen, setIsOpen] = useState(true);
   const apiUrl = process.env.NEXT_PUBLIC_BACKEND_URL ?? '';
   const [formData, setFormData] = useState<FormData>({
     fullName: '',
@@ -133,12 +130,12 @@ const OrderNewCard: React.FC<OrderNewCardProps> = ({ isOpen, setIsOrderCardModal
   ) => {
     const value = e.target.type === 'checkbox' ? (e.target as HTMLInputElement).checked : e.target.value;
     setFormData((prev) => ({ ...prev, [field]: value }));
-    setError(null); // Clear error on input change
+    setError(null);
   };
 
   const handleClose = () => {
-    if (setIsOrderCardModalOpen) setIsOrderCardModalOpen(false);
-    onClose();
+    setIsOpen(false);
+    router.back();
   };
 
   if (!isOpen) return null;
@@ -310,4 +307,4 @@ const OrderNewCard: React.FC<OrderNewCardProps> = ({ isOpen, setIsOrderCardModal
   );
 };
 
-export default OrderNewCard;
+export default OrderNewCardPage;
