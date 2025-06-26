@@ -280,7 +280,7 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
           <h2 className="text-2xl font-bold text-gray-900">Create Account</h2>
           <p className="mt-2 text-sm text-gray-600">
             Already have an account?{' '}
-            <Link href="/login" className="text-blue-600 hover:text-blue-500">
+            <Link href="/login" className="text-red-600 hover:text-red-500">
               Sign in
             </Link>
           </p>
@@ -361,7 +361,7 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
                   name="gender"
                   value={formData.gender}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-sm focus:border-red-500 focus:ring-red-500"
                 >
                   <option value="">Select gender</option>
                   <option value="male">Male</option>
@@ -411,14 +411,14 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                   Password *
                 </label>
-                <input id="password" name="password" type="password" value={formData.password} onChange={handleChange} className={`mt-1 block w-full rounded-md border p-2 text-sm ${ errors.password ? 'border-red-300' : 'border-gray-300' } focus:border-blue-500 focus:ring-blue-500`} />
+                <input id="password" name="password" type="password" value={formData.password} onChange={handleChange} className={`mt-1 block w-full rounded-md border p-2 text-sm ${ errors.password ? 'border-red-300' : 'border-gray-300' } focus:border-red-500 focus:ring-red-500`} />
                 {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
               </div>
               <div>
                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
                   Confirm Password *
                 </label>
-                <input id="confirmPassword" name="confirmPassword" type="password" value={formData.confirmPassword} onChange={handleChange} className={`mt-1 block w-full rounded-md border p-2 text-sm ${ errors.confirmPassword ? 'border-red-300' : 'border-gray-300' } focus:border-blue-500 focus:ring-blue-500`} />
+                <input id="confirmPassword" name="confirmPassword" type="password" value={formData.confirmPassword} onChange={handleChange} className={`mt-1 block w-full rounded-md border p-2 text-sm ${ errors.confirmPassword ? 'border-red-300' : 'border-gray-300' } focus:border-red-500 focus:ring-red-500`} />
                 {errors.confirmPassword && <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>}
               </div>
             </div>
@@ -434,7 +434,7 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
                     <option value="+1">+1</option>
                     <option value="+44">+44</option>
                   </select>
-                  <input id="phone_number" name="phone_number" type="tel" value={formData.phone_number} onChange={handlePhoneChange} className={`flex-1 rounded-r-md border p-2 text-sm ${ errors.phone_number ? 'border-red-300' : 'border-gray-300' } focus:border-blue-500 focus:ring-blue-500`} placeholder="Enter phone number"/>
+                  <input id="phone_number" name="phone_number" type="tel" value={formData.phone_number} onChange={handlePhoneChange} className={`flex-1 rounded-r-md border p-2 text-sm ${ errors.phone_number ? 'border-red-300' : 'border-gray-300' } focus:border-red-500 focus:ring-red-500`} placeholder="Enter phone number"/>
                 </div>
                 {errors.phone_number && <p className="mt-1 text-sm text-red-600">{errors.phone_number}</p>}
               </div>
@@ -442,7 +442,7 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
                 <label htmlFor="country" className="block text-sm font-medium text-gray-700">
                   Country *
                 </label>
-                <select id="country" name="country" value={formData.country} onChange={handleChange} className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-sm focus:border-blue-500 focus:ring-blue-500">
+                <select id="country" name="country" value={formData.country} onChange={handleChange} className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-sm focus:border-red-500 focus:ring-red-500">
                   <option value="">Select a country</option>
                   <option value="US">United States</option>
                   <option value="GB">United Kingdom</option>
@@ -457,7 +457,7 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
               <label htmlFor="address_line1" className="block text-sm font-medium text-gray-700">
                 Address Line 1 *
               </label>
-              <input id="address_line1" name="address_line1" type="text" value={formData.address_line1} onChange={handleChange} className={`mt-1 block w-full rounded-md border p-2 text-sm ${ errors.address_line1 ? 'border-red-300' : 'border-gray-300' } focus:border-blue-500 focus:ring-blue-500`} />
+              <input id="address_line1" name="address_line1" type="text" value={formData.address_line1} onChange={handleChange} className={`mt-1 block w-full rounded-md border p-2 text-sm ${ errors.address_line1 ? 'border-red-300' : 'border-gray-300' } focus:border-red-500 focus:ring-red-500`} />
               {errors.address_line1 && <p className="mt-1 text-sm text-red-600">{errors.address_line1}</p>}
             </div>
 
@@ -465,7 +465,7 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
               <label htmlFor="address_line2" className="block text-sm font-medium text-gray-700">
                 Address Line 2
               </label>
-              <input id="address_line2" name="address_line2" type="text" value={formData.address_line2} onChange={handleChange} className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-sm focus:border-blue-500 focus:ring-blue-500"/>
+              <input id="address_line2" name="address_line2" type="text" value={formData.address_line2} onChange={handleChange} className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-sm focus:border-red-500 focus:ring-red-500"/>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
@@ -473,34 +473,34 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
                 <label htmlFor="city" className="block text-sm font-medium text-gray-700">
                   City *
                 </label>
-                <input id="city" name="city" type="text" value={formData.city} onChange={handleChange} className={`mt-1 block w-full rounded-md border p-2 text-sm ${ errors.city ? 'border-red-300' : 'border-gray-300' } focus:border-blue-500 focus:ring-blue-500`} />
+                <input id="city" name="city" type="text" value={formData.city} onChange={handleChange} className={`mt-1 block w-full rounded-md border p-2 text-sm ${ errors.city ? 'border-red-300' : 'border-gray-300' } focus:border-red-500 focus:ring-red-500`} />
                 {errors.city && <p className="mt-1 text-sm text-red-600">{errors.city}</p>}
               </div>
               <div>
                 <label htmlFor="postal_code" className="block text-sm font-medium text-gray-700">
                   Postal/ZIP Code *
                 </label>
-                <input id="postal_code" name="postal_code" type="text" value={formData.postal_code} onChange={handleChange} className={`mt-1 block w-full rounded-md border p-2 text-sm ${ errors.postal_code ? 'border-red-300' : 'border-gray-300' } focus:border-blue-500 focus:ring-blue-500`} />
+                <input id="postal_code" name="postal_code" type="text" value={formData.postal_code} onChange={handleChange} className={`mt-1 block w-full rounded-md border p-2 text-sm ${ errors.postal_code ? 'border-red-300' : 'border-gray-300' } focus:border-red-500 focus:ring-red-500`} />
                 {errors.postal_code && <p className="mt-1 text-sm text-red-600">{errors.postal_code}</p>}
               </div>
             </div>
 
             <div className="flex items-start">
-              <input id="agreeToTerms" name="agreeToTerms" type="checkbox" checked={formData.agreeToTerms} onChange={handleChange} className={`h-4 w-4 rounded border ${ errors.agreeToTerms ? 'border-red-500' : 'border-gray-300' } text-blue-600 focus:ring-blue-500`} />
+              <input id="agreeToTerms" name="agreeToTerms" type="checkbox" checked={formData.agreeToTerms} onChange={handleChange} className={`h-4 w-4 rounded ${ errors.agreeToTerms ? 'border-red-500' : 'border-gray-300' } text-red-600 focus:ring-red-500`} />
               <label htmlFor="agreeToTerms" className="ml-2 text-sm text-gray-700">
                 I agree to the{' '}
-                <button type="button" onClick={() => setShowTerms(true)} className="text-blue-600 hover:text-blue-500">
+                <button type="button" onClick={() => setShowTerms(true)} className="text-red-600 hover:text-red-500">
                   Terms of Service
                 </button>{' '}
                 and{' '}
-                <button type="button" onClick={() => setShowTerms(true)} className="text-blue-600 hover:text-blue-500">
+                <button type="button" onClick={() => setShowTerms(true)} className="text-red-600 hover:text-red-500">
                   Privacy Policy
                 </button>
               </label>
               {errors.agreeToTerms && <p className="mt-1 text-sm text-red-600">{errors.agreeToTerms}</p>}
             </div>
 
-            <button type="submit" disabled={isLoading} className="w-full rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50">
+            <button type="submit" disabled={isLoading} className="w-full rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50">
               {isLoading ? (
                 <div className="flex items-center justify-center space-x-2">
                   <svg className="h-5 w-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -558,7 +558,7 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
                     setFormData((prev) => ({ ...prev, agreeToTerms: true }));
                     setErrors((prev) => ({ ...prev, agreeToTerms: undefined }));
                   }}
-                  className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                  className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
                 >
                   I Agree
                 </button>

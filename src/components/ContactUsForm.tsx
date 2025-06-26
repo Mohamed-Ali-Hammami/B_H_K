@@ -122,7 +122,7 @@ const ContactUsForm: React.FC<ContactUsFormProps> = ({ onClose }) => {
             }`}
           />
           {!errors.emailValid && (
-            <p className="mt-1 text-sm text-red-600">Format d'email invalide</p>
+            <p className="mt-1 text-sm text-red-600">Format d&apos;email invalide</p>
           )}
         </div>
         

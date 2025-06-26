@@ -60,7 +60,7 @@ const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
           </div>
         ) : (
           <label
-            className="flex items-center justify-center w-32 h-32 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 border-4 border-gray-200 cursor-pointer hover:from-blue-200 hover:to-blue-300 transition-all duration-300 shadow-md hover:shadow-lg"
+            className="flex items-center justify-center w-32 h-32 rounded-full bg-gradient-to-br from-red-100 to-red-200 border-4 border-gray-200 cursor-pointer hover:from-red-200 hover:to-red-300 transition-all duration-300 shadow-md hover:shadow-lg"
           >
             <input
               id="profile-picture-upload"
@@ -72,7 +72,7 @@ const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
               aria-label="Upload profile picture"
             />
             <svg
-              className="w-8 h-8 text-blue-600 group-hover:text-blue-700 transition-colors duration-300"
+              className="w-8 h-8 text-red-600 group-hover:text-red-700 transition-colors duration-300"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -92,7 +92,7 @@ const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors duration-300"
+          className="text-sm text-red-600 hover:text-red-700 font-medium transition-colors duration-300"
           aria-label="Change profile picture"
         >
           Change Image

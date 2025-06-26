@@ -176,7 +176,7 @@ const DepositFunds: React.FC<DepositFundsProps> = ({ isOpen, setIsDepositModalOp
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 transition-opacity duration-300">
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6 sm:p-8 transform transition-all duration-300">
         <button
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full"
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl font-semibold focus:outline-none focus:ring-2 focus:ring-red-500 rounded-full"
           onClick={handleClose}
           aria-label="Close modal"
         >
@@ -190,7 +190,7 @@ const DepositFunds: React.FC<DepositFundsProps> = ({ isOpen, setIsDepositModalOp
 
         {isLoading ? (
           <div className="flex justify-center items-center h-48">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
           </div>
         ) : (
           <div className="space-y-6">
@@ -220,7 +220,7 @@ const DepositFunds: React.FC<DepositFundsProps> = ({ isOpen, setIsDepositModalOp
                   min={minDeposit}
                   value={depositAmount}
                   onChange={handleDepositAmountChange}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200"
                   placeholder={`Minimum ${minDeposit.toFixed(2)} ${currency}`}
                 />
                 <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-yellow-500">
@@ -249,7 +249,7 @@ const DepositFunds: React.FC<DepositFundsProps> = ({ isOpen, setIsDepositModalOp
             </div>
 
             <div className="text-center">
-              <p className="text-blue-600 font-semibold text-sm">
+              <p className="text-red-600 font-semibold text-sm">
                 Amount to Pay ({paymentMethod}): {paymentAmount.toFixed(10)} {paymentMethod}
               </p>
             </div>
@@ -265,7 +265,7 @@ const DepositFunds: React.FC<DepositFundsProps> = ({ isOpen, setIsDepositModalOp
               )}
               <button
                 type="button"
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200"
                 onClick={handleCopyToClipboard}
               >
                 Copy Address
@@ -287,7 +287,7 @@ const DepositFunds: React.FC<DepositFundsProps> = ({ isOpen, setIsDepositModalOp
                 onChange={(e) => setTransactionHash(e.target.value)}
               />
               <button
-                className="w-full px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
+                className="w-full px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
                 onClick={handleCheckTransactionStatus}
                 disabled={isLoading || !transactionHash}
               >

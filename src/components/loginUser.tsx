@@ -132,8 +132,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ isOpen, onClose }) => {
             <div className="mb-6 text-center">
               <h2 className="text-2xl font-bold text-gray-900">Sign In</h2>
               <p className="mt-2 text-sm text-gray-600">
-                Don't have an account?{' '}
-                <Link href="/register" className="text-blue-600 hover:text-blue-500">
+                Don&apos;t have an account?{' '}
+                <Link href="/register" className="text-red-600 hover:text-red-500 ml-1">
                   Sign up
                 </Link>
               </p>
@@ -158,7 +158,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ isOpen, onClose }) => {
                   onChange={handleInputChange}
                   className={`mt-1 block w-full rounded-md border p-2 text-sm ${
                     errors.email ? 'border-red-300' : 'border-gray-300'
-                  } focus:border-blue-500 focus:ring-blue-500`}
+                  } focus:border-red-500 focus:ring-red-500`}
                   placeholder="Enter your email"
                 />
                 {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
@@ -176,7 +176,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ isOpen, onClose }) => {
                   onChange={handleInputChange}
                   className={`mt-1 block w-full rounded-md border p-2 text-sm ${
                     errors.password ? 'border-red-300' : 'border-gray-300'
-                  } focus:border-blue-500 focus:ring-blue-500`}
+                  } focus:border-red-500 focus:ring-red-500`}
                   placeholder="Enter your password"
                 />
                 {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
@@ -186,7 +186,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ isOpen, onClose }) => {
                 <button
                   type="button"
                   onClick={() => setShowForgotPassword(true)}
-                  className="text-sm text-blue-600 hover:text-blue-500"
+                  className="text-sm text-red-600 hover:text-red-500"
                 >
                   Forgot password?
                 </button>
@@ -195,7 +195,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ isOpen, onClose }) => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center space-x-2">
@@ -250,7 +250,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ isOpen, onClose }) => {
               <div>
                 <label
                   htmlFor="forgotPasswordEmail"
-                  className="block text-sm font-medium text-gray-700"
+                  className="text-red-600 hover:text-red-500 text-sm font-medium"
                 >
                   Email *
                 </label>
@@ -260,7 +260,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ isOpen, onClose }) => {
                   type="email"
                   value={forgotPassword.email}
                   onChange={handleForgotPasswordChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-sm focus:border-red-500 focus:ring-red-500"
                   placeholder="Enter your email"
                 />
               </div>
@@ -275,7 +275,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ isOpen, onClose }) => {
                 </button>
                 <button
                   type="submit"
-                  className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                  className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
                 >
                   Send Reset Link
                 </button>

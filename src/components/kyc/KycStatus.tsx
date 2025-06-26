@@ -9,7 +9,7 @@ const statusIcons = {
   approved: <CheckCircle className="text-green-500" />,
   rejected: <XCircle className="text-red-500" />,
   pending: <Clock className="text-yellow-500" />,
-  in_progress: <AlertCircle className="text-blue-500" />,
+  in_prograde: <AlertCircle className="text-red-500" />,
   not_started: <FileText className="text-gray-400" />,
 };
 
@@ -68,7 +68,7 @@ export default function KycStatus() {
         status === 'approved' ? 'bg-green-100 text-green-800' :
         status === 'rejected' ? 'bg-red-100 text-red-800' :
         status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-        'bg-blue-100 text-blue-800'
+        'bg-red-100 text-red-800'
       }`}>
         {statusIcons[status as keyof typeof statusIcons] || statusIcons.not_started}
         <span className="ml-1.5">{statusText}</span>
@@ -101,7 +101,7 @@ export default function KycStatus() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-red-500" />
       </div>
     );
   }
@@ -158,7 +158,7 @@ export default function KycStatus() {
             <ul role="list" className="mt-2 space-y-2">
               {status.next_steps.map((step, index) => (
                 <li key={index} className="flex items-start">
-                  <span className="text-blue-500 mr-2">•</span>
+                  <span className="text-red-500 mr-2">•</span>
                   <span className="text-sm text-gray-700">{step}</span>
                 </li>
               ))}
@@ -179,14 +179,14 @@ export default function KycStatus() {
       </div>
 
       {status.status !== 'approved' && (
-        <div className="bg-blue-50 rounded-lg p-4">
+        <div className="bg-red-50 rounded-lg p-4">
           <div className="flex">
             <div className="flex-shrink-0">
-              <AlertCircle className="h-5 w-5 text-blue-400" aria-hidden="true" />
+              <AlertCircle className="h-5 w-5 text-red-400" aria-hidden="true" />
             </div>
             <div className="ml-3">
-              <h3 className="text-sm font-medium text-blue-800">Verification Required</h3>
-              <div className="mt-2 text-sm text-blue-700">
+              <h3 className="text-sm font-medium text-red-800">Verification Required</h3>
+              <div className="mt-2 text-sm text-red-700">
                 <p>
                   To comply with regulations, we need to verify your identity. Please ensure all documents are clear and valid.
                 </p>

@@ -235,10 +235,10 @@ const CombinedForm: React.FC<CombinedFormProps> = ({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full rounded-md px-4 py-2 text-sm font-medium text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                className={`w-full rounded-md px-4 py-2 text-sm font-medium text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 ${
                   isSubmitting
-                    ? 'bg-blue-400 cursor-not-allowed'
-                    : 'bg-blue-600 hover:bg-blue-700'
+                    ? 'bg-red-400 cursor-not-allowed'
+                    : 'bg-red-600 hover:bg-red-700'
                 }`}
               >
                 {isSubmitting ? (

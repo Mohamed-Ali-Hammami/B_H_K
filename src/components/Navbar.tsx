@@ -56,7 +56,7 @@ const Navbar = () => {
           <div className="-mr-2 flex items-center md:hidden">
             <button
               onClick={toggleMobileMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500"
             >
               <span className="sr-only">Open main menu</span>
               {mobileMenuOpen ? <FiX className="h-6 w-6" /> : <FiMenu className="h-6 w-6" />}
@@ -89,7 +89,7 @@ const Navbar = () => {
                 href={item.href}
                 className={`${
                   pathname === item.href
-                    ? 'bg-blue-50 text-blue-600'
+                    ? 'bg-red-50 text-red-600'
                     : 'text-gray-500 hover:text-gray-800 hover:bg-gray-100'
                 } block px-4 py-2 text-base font-medium`}
               >

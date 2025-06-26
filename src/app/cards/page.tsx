@@ -69,11 +69,11 @@ const CardPage = () => {
             <h2 className="text-2xl font-bold text-center">What People Are Saying</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
               <div className="p-4 border rounded-lg shadow-sm">
-                <p className="italic">"The cashback has been a game-changer for me!"</p>
+                <p className="italic">&ldquo;The cashback has been a game-changer for me!&rdquo;</p>
                 <p className="text-right font-semibold mt-2">- Sarah K.</p>
               </div>
               <div className="p-4 border rounded-lg shadow-sm">
-                <p className="italic">"Traveling is so much better with this card."</p>
+                <p className="italic">&ldquo;Traveling is so much better with this card.&rdquo;</p>
                 <p className="text-right font-semibold mt-2">- Michael P.</p>
               </div>
             </div>

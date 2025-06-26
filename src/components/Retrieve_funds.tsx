@@ -43,8 +43,8 @@ const RetrieveFunds: React.FC<RetrieveFundsProps> = ({ onClose }) => {
   }, []);
 
   const CountdownItem = ({ value, label }: { value: string; label: string }) => (
-    <div className="flex flex-col items-center px-4 py-3 bg-blue-50 rounded-lg">
-      <span className="text-2xl font-bold text-blue-700">{value}</span>
+    <div className="flex flex-col items-center px-4 py-3 bg-red-50 rounded-lg">
+      <span className="text-2xl font-bold text-red-700">{value}</span>
       <span className="text-xs text-gray-500 uppercase tracking-wider">{label}</span>
     </div>
   );
@@ -72,7 +72,7 @@ const RetrieveFunds: React.FC<RetrieveFundsProps> = ({ onClose }) => {
       </div>
 
       {!isAvailable && (
-        <div className="bg-blue-50 rounded-xl p-6 mb-6">
+        <div className="bg-red-50 rounded-xl p-6 mb-6">
           <h3 className="text-lg font-semibold text-center text-gray-800 mb-4">
             Service Launching In
           </h3>
@@ -89,14 +89,14 @@ const RetrieveFunds: React.FC<RetrieveFundsProps> = ({ onClose }) => {
       <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
         <h3 className="font-medium text-gray-800 mb-2">About Our Service</h3>
         <p className="text-sm text-gray-600">
-          Our secure funds retrieval service will be available soon. We're implementing additional 
+          Our secure funds retrieval service will be available soon. We&apos;re implementing additional 
           security measures to ensure your transactions are safe and reliable.
         </p>
         
         {isAvailable && (
           <div className="mt-4 pt-4 border-t border-gray-200">
             <button 
-              className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors"
+              className="w-full py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors"
               onClick={() => alert('Fund retrieval service will be available soon')}
             >
               Retrieve Funds

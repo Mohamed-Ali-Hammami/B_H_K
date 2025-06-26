@@ -322,7 +322,7 @@ const KycVerification: React.FC<{
             {cameraAvailable && (
               <button
                 onClick={startCamera}
-                className="px-4 py-2 bg-blue-50 text-blue-700 rounded-md hover:bg-blue-100 text-sm font-medium flex items-center gap-2"
+                className="px-4 py-2 bg-red-50 text-red-700 rounded-md hover:bg-red-100 text-sm font-medium flex items-center gap-2"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -359,7 +359,7 @@ const KycVerification: React.FC<{
                 <button
                   key={doc.id}
                   onClick={() => handleDocumentSelect(doc)}
-                  className="p-4 border rounded-lg hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  className="p-4 border rounded-lg hover:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-300"
                 >
                   <h3 className="font-medium">{doc.name}</h3>
                   <p className="text-sm text-gray-600">{doc.description}</p>
@@ -434,7 +434,7 @@ const KycVerification: React.FC<{
                 <button
                   onClick={captureSelfie}
                   disabled={isLoading || !frontFile}
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 flex items-center gap-2"
+                  className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:bg-gray-400 flex items-center gap-2"
                 >
                   {isLoading ? <Loader2 className="animate-spin" /> : 'Capture Selfie'}
                 </button>
@@ -518,7 +518,7 @@ const KycVerification: React.FC<{
             <p className="text-gray-600">Your documents are being reviewed manually.</p>
             <button
               onClick={handleClose}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
             >
               Close
             </button>
@@ -558,7 +558,7 @@ const KycVerification: React.FC<{
           {steps.map((s, i) => (
             <span
               key={s}
-              className={`font-medium ${i <= currentStepIndex ? 'text-blue-600' : ''}`}
+              className={`font-medium ${i <= currentStepIndex ? 'text-red-600' : ''}`}
             >
               {s}
             </span>
@@ -566,7 +566,7 @@ const KycVerification: React.FC<{
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
           <div
-            className="bg-blue-600 h-2 rounded-full"
+            className="bg-red-600 h-2 rounded-full"
             style={{ width: `${((currentStepIndex + 1) / steps.length) * 100}%` }}
           ></div>
         </div>

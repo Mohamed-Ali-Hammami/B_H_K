@@ -58,7 +58,7 @@ const UserAvatarDropdown: React.FC = () => {
                 onClick={() => setActiveModal('signup')}
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
               >
-                S'inscrire
+S&apos;inscrire
               </button>
               <button
                 onClick={() => setActiveModal('login')}

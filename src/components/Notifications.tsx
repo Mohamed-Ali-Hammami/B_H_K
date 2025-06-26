@@ -66,14 +66,14 @@ const Notifications: React.FC<NotificationsProps> = ({ notifications, onMarkAsRe
                   <div
                     key={notification.id}
                     className={`px-4 py-3 hover:bg-gray-50 cursor-pointer ${
-                      !notification.read ? 'bg-blue-50' : ''
+                      !notification.read ? 'bg-red-50' : ''
                     }`}
                     onClick={(e) => handleMarkAsRead(notification.id, e)}
                   >
                     <div className="flex items-start">
                       <div className="flex-shrink-0 pt-0.5">
                         {!notification.read && (
-                          <div className="h-2 w-2 rounded-full bg-blue-500"></div>
+                          <div className="h-2 w-2 rounded-full bg-red-500"></div>
                         )}
                       </div>
                       <div className="ml-3 flex-1">
@@ -93,7 +93,7 @@ const Notifications: React.FC<NotificationsProps> = ({ notifications, onMarkAsRe
                       .filter(n => !n.read)
                       .forEach(n => onMarkAsRead(n.id));
                   }}
-                  className="text-xs text-blue-600 hover:text-blue-800"
+                  className="text-xs text-red-600 hover:text-red-800"
                 >
                   Mark all as read
                 </button>

@@ -106,7 +106,7 @@ const TransferFundsForm: React.FC<TransferFundsProps> = ({ onClose }) => {
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="0.00"
-              className="block w-full pl-7 pr-12 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="block w-full pl-7 pr-12 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
             />
           </div>
         </div>
@@ -128,7 +128,7 @@ const TransferFundsForm: React.FC<TransferFundsProps> = ({ onClose }) => {
         <button 
           type="submit" 
           disabled={isProcessing}
-          className={`w-full py-2 px-4 rounded-md text-white font-medium transition-colors ${isProcessing ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'}`}
+          className={`w-full py-2 px-4 rounded-md text-white font-medium transition-colors ${isProcessing ? 'bg-red-400' : 'bg-red-600 hover:bg-red-700'}`}
         >
           {isProcessing ? 'Processing...' : 'Transfer Funds'}
         </button>

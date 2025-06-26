@@ -165,7 +165,7 @@ export default function KycReviewPanel() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-red-500" />
       </div>
     );
   }
@@ -203,7 +203,7 @@ export default function KycReviewPanel() {
           </h2>
           <button
             onClick={() => setReviewing(false)}
-            className="text-sm font-medium text-blue-600 hover:text-blue-500"
+            className="text-sm font-medium text-red-600 hover:text-red-500"
           >
             Back to list
           </button>
@@ -240,7 +240,7 @@ export default function KycReviewPanel() {
                     </div>
                     <button
                       onClick={() => doc.file_path && downloadDocument(doc.file_path, doc.document_type)}
-                      className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                      className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                     >
                       <Download className="w-3 h-3 mr-1.5" />
                       View
@@ -278,7 +278,7 @@ export default function KycReviewPanel() {
                     <textarea
                       rows={3}
                       id="rejection-reason"
-                      className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border border-gray-300 rounded-md"
+                      className="shadow-sm focus:ring-red-500 focus:border-red-500 block w-full sm:text-sm border border-gray-300 rounded-md"
                       placeholder="Please specify the reason for rejection..."
                       value={rejectionReason}
                       onChange={(e) => setRejectionReason(e.target.value)}
@@ -291,7 +291,7 @@ export default function KycReviewPanel() {
                 <button
                   type="button"
                   onClick={() => setReviewing(false)}
-                  className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                   disabled={submitting}
                 >
                   Cancel
@@ -347,7 +347,7 @@ export default function KycReviewPanel() {
                 <div className="px-4 py-4 sm:px-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-blue-600 truncate">
+                      <p className="text-sm font-medium text-red-600 truncate">
                         {app.first_name} {app.last_name}
                       </p>
                       <p className="text-sm text-gray-500">{app.email}</p>
@@ -355,7 +355,7 @@ export default function KycReviewPanel() {
                     <div className="ml-2 flex-shrink-0 flex">
                       <button
                         onClick={() => handleReview(app)}
-                        className="px-2.5 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        className="px-2.5 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                       >
                         Review
                       </button>

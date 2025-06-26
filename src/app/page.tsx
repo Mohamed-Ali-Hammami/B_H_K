@@ -136,7 +136,7 @@ export default function Home() {
               Why Choose Hong Kong Bank?
             </h2>
             <p className="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
-              We're redefining banking with innovative solutions tailored for the modern world.
+              We&apos;re redefining banking with innovative solutions tailored for the modern world.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
