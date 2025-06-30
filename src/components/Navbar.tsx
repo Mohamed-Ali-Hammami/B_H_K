@@ -23,8 +23,8 @@ const Navbar = () => {
   const toggleContactForm = () => setContactFormOpen(!contactFormOpen);
 
   return (
-    <nav className="bg-white shadow-sm relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="bg-white shadow-sm relative z-40">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-40">
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
@@ -100,7 +100,9 @@ const Navbar = () => {
                   <FiMail className="inline mr-2" /> Contactez-nous
                 </button>
               </div>
-              <UserAvatarDropdown />
+              <div className="px-4">
+                <UserAvatarDropdown />
+              </div>
             </div>
           </div>
         </div>

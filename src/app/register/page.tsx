@@ -47,7 +47,7 @@ const RegisterPage = () => {
 
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-white">
+    <div className="fixed inset-0 flex items-center justify-center bg-white z-[1000]">
       <div className="relative">
         <button 
           onClick={handleClose}

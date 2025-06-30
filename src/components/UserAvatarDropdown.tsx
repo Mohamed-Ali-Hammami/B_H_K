@@ -15,6 +15,7 @@ const UserAvatarDropdown: React.FC = () => {
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
     if (activeModal !== 'none') setActiveModal('none');
+    console.log('Dropdown toggled, activeModal:', activeModal);
   };
 
   const handleLogoutClick = () => {
@@ -33,7 +34,7 @@ const UserAvatarDropdown: React.FC = () => {
   }, []);
 
   return (
-    <div ref={dropdownRef} className="relative">
+    <div ref={dropdownRef} className="relative h-full flex items-center">
       <button
         onClick={toggleDropdown}
         className="flex items-center text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-50"
@@ -42,26 +43,30 @@ const UserAvatarDropdown: React.FC = () => {
         <span>{isLoggedIn ? 'Se déconnecter' : "Se connecter/S'inscrire"}</span>
       </button>
       {dropdownOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+        <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-md shadow-lg py-1 z-50">
           {isLoggedIn ? (
-            <>
-              <button
-                onClick={handleLogoutClick}
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-              >
-                Déconnexion
-              </button>
-            </>
+            <button
+              onClick={handleLogoutClick}
+              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+            >
+              Déconnexion
+            </button>
           ) : (
             <>
               <button
-                onClick={() => setActiveModal('signup')}
+                onClick={() => {
+                  setActiveModal('signup');
+                  console.log('Modal set to: signup');
+                }}
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
               >
-S&apos;inscrire
+                S'inscrire
               </button>
               <button
-                onClick={() => setActiveModal('login')}
+                onClick={() => {
+                  setActiveModal('login');
+                  console.log('Modal set to: login');
+                }}
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
               >
                 Se connecter
@@ -71,7 +76,7 @@ S&apos;inscrire
         </div>
       )}
       {activeModal !== 'none' && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-[100] p-4">
           <div className="bg-white rounded-lg max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
             <button
               type="button"
