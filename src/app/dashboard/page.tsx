@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FiArrowDown, FiAlignJustify } from 'react-icons/fi';
+import { FiSettings } from 'react-icons/fi';
 import DashboardSidebar from '../../components/DashboardSidebar';
 import Notifications from '../../components/Notifications';
 import { useAuth } from '../../context/AuthContext';
@@ -20,7 +20,6 @@ import PaymentsList from '../../components/PaymentsList';
 interface UserData {
   first_name: string;
   last_name: string;
-  username: string;
   email: string;
   profile_picture: string | null;
   tnc_wallet_id: string;
@@ -66,7 +65,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedAction, setSelectedAction] = useState<
-    'changePassword' | 'changeUsername' | 'changeEmail' | 'changeProfilePicture' | null
+    'changePassword' | 'changeEmail' | 'changeProfilePicture' | null
   >(null);
   const [showProfileActions, setShowProfileActions] = useState<boolean>(false);
   const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState<boolean>(false);
@@ -85,7 +84,7 @@ export default function Dashboard() {
   };
 
   // Handle profile update actions
-  const handleActionSelect = (action: 'changePassword' | 'changeUsername' | 'changeEmail' | 'changeProfilePicture') => {
+  const handleActionSelect = (action: 'changePassword' | 'changeEmail' | 'changeProfilePicture') => {
     setSelectedAction(prevAction => (prevAction === action ? null : action));
   };
 
@@ -102,7 +101,6 @@ export default function Dashboard() {
           if (!prevData) return null;
           return {
             ...prevData,
-            ...(updateData.username && { username: updateData.username }),
             ...(updateData.email && { email: updateData.email }),
             ...(updateData.profilePicture && {
               profile_picture: typeof updateData.profilePicture === 'string'
@@ -277,8 +275,11 @@ export default function Dashboard() {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <DashboardSidebar activeTab={activeTab} onTabChange={setActiveTab} />
-
+      <DashboardSidebar 
+        activeTab={activeTab} 
+        onTabChange={setActiveTab} 
+        userData={userData}
+      />
       <main className="flex-1 lg:ml-64 p-4 md:p-6 transition-all duration-300">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
@@ -287,7 +288,7 @@ export default function Dashboard() {
               {profilePictureSrc ? (
                 <Image
                   src={profilePictureSrc}
-                  alt={`${userData.username}'s profile picture`}
+                  alt={`${userData.email}'s profile picture`}
                   width={40}
                   height={40}
                   className="rounded-full"
@@ -295,25 +296,16 @@ export default function Dashboard() {
                 />
               ) : (
                 <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-gray-600">
-                  {userData.username[0].toUpperCase()}
+                  {userData.email[0].toUpperCase()}
                 </div>
               )}
-              <h1 className="text-2xl font-bold text-gray-800">Welcome, {userData.username}</h1>
+              <h1 className="text-2xl font-bold text-gray-800">Welcome, {userData.first_name}</h1>
               <button
-                title="profile actions"
+                aria-label="Toggle profile actions"
                 className="p-2 hover:bg-gray-200 rounded-full"
                 onClick={toggleProfileActions}
               >
-                <div className="icon-container">
-                  <FiArrowDown
-                    className={`icon ${showProfileActions ? 'block' : 'hidden'}`}
-                    size={24}
-                  />
-                  <FiAlignJustify
-                    className={`icon ${showProfileActions ? 'hidden' : 'block'}`}
-                    size={24}
-                  />
-                </div>
+                <FiSettings size={24} />
               </button>
             </div>
             <Notifications notifications={notifications} onMarkAsRead={markAsRead} />
@@ -324,12 +316,6 @@ export default function Dashboard() {
             <div className="bg-white p-6 rounded-xl shadow-sm mb-6">
               <h2 className="text-lg font-semibold mb-4">Profile Actions</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <button
-                  className="px-3 py-1 bg-red-100 text-red-600 rounded-md text-sm"
-                  onClick={() => handleActionSelect('changeUsername')}
-                >
-                  Change Username
-                </button>
                 <button
                   className="px-3 py-1 bg-red-100 text-red-600 rounded-md text-sm"
                   onClick={() => handleActionSelect('changeEmail')}
@@ -441,7 +427,6 @@ export default function Dashboard() {
             <div className="bg-white p-6 rounded-xl shadow-sm">
               <h2 className="text-lg font-semibold mb-4">Account Details</h2>
               <div>
-                <p><strong>Username:</strong> {userData.username}</p>
                 <p><strong>Email:</strong> {userData.email}</p>
                 <p><strong>First Name:</strong> {userData.first_name}</p>
                 <p><strong>Last Name:</strong> {userData.last_name}</p>

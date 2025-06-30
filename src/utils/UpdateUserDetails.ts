@@ -1,7 +1,6 @@
 // src/utils/updateUserDetails.ts
 
 interface UpdateUserDetails {
-  username?: string;
   email?: string;
   newPassword?: string;
   profilePicture?: File | string;

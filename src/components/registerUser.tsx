@@ -5,7 +5,15 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 import { PhoneNumberUtil } from 'google-libphonenumber';
+import countries from 'i18n-iso-countries';
+import { getCountryCallingCode, CountryCode } from 'libphonenumber-js';
 import KycVerification from '../components/kyc/KycVerification';
+
+// Import English locale for country names
+import en from 'i18n-iso-countries/langs/en.json';
+
+// Register English locale
+countries.registerLocale(en);
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
@@ -22,7 +30,6 @@ interface FormData {
   city: string;
   state: string;
   postal_code: string;
-  username: string;
   password: string;
   confirmPassword: string;
   agreeToTerms: boolean;
@@ -38,7 +45,6 @@ interface ErrorState {
   address_line1?: string;
   city?: string;
   postal_code?: string;
-  username?: string;
   password?: string;
   confirmPassword?: string;
   agreeToTerms?: string;
@@ -49,6 +55,20 @@ interface RegisterFormProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+// Generate country list with dial codes
+const countryList = Object.entries(countries.getNames('en', { select: 'official' })).map(([code, name]) => {
+  try {
+    return {
+      code: code as CountryCode,
+      name,
+      dialCode: `+${getCountryCallingCode(code as CountryCode)}`,
+    };
+  } catch {
+    return null;
+  }
+}).filter((item): item is { code: CountryCode; name: string; dialCode: string } => item !== null)
+  .sort((a, b) => a.name.localeCompare(b.name));
 
 const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
   const router = useRouter();
@@ -71,7 +91,6 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
     city: '',
     state: '',
     postal_code: '',
-    username: '',
     password: '',
     confirmPassword: '',
     agreeToTerms: false,
@@ -126,13 +145,6 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
     if (!formData.city.trim()) newErrors.city = 'City is required';
     if (!formData.postal_code.trim()) newErrors.postal_code = 'Postal/ZIP code is required';
 
-    // Username Validation
-    if (!formData.username.trim()) newErrors.username = 'Username is required';
-    else if (formData.username.length < 4) newErrors.username = 'Username must be at least 4 characters';
-    else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
-      newErrors.username = 'Username can only contain letters, numbers, and underscores';
-    }
-
     // Password Validation
     if (!formData.password) newErrors.password = 'Password is required';
     else if (formData.password.length < 8) newErrors.password = 'Password must be at least 8 characters';
@@ -158,7 +170,17 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked ?? false;
-    setFormData((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+
+    if (name === 'country') {
+      const selectedCountry = countryList.find(country => country.code === value);
+      setFormData((prev) => ({
+        ...prev,
+        country: value,
+        dialCode: selectedCountry ? selectedCountry.dialCode : prev.dialCode,
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    }
     setErrors((prev) => ({ ...prev, [name]: undefined }));
   };
 
@@ -235,10 +257,10 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
 
   if (showKyc && tempUserId) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-        <div className="relative w-full max-w-4xl rounded-lg bg-white p-6 shadow-xl">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 sm:p-6">
+        <div className="relative w-full max-w-3xl rounded-xl bg-white p-4 sm:p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
           <button
-            className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
+            className="absolute right-4 top-4 text-gray-500 hover:text-gray-700 text-2xl font-medium"
             onClick={() => {
               setShowKyc(false);
               setIsLoading(false);
@@ -248,7 +270,7 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
           >
             ×
           </button>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Identity Verification</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Identity Verification</h2>
           <p className="text-sm text-gray-600 mb-6">
             Please complete the identity verification process to activate your account.
           </p>
@@ -267,39 +289,39 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="relative w-full max-w-2xl rounded-lg bg-white p-6 shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 sm:p-6">
+      <div className="relative w-full max-w-lg sm:max-w-2xl rounded-xl bg-white p-4 sm:p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
         <button
-          className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
+          className="absolute right-4 top-4 text-gray-500 hover:text-gray-700 text-2xl font-medium"
           onClick={onClose}
           aria-label="Close"
         >
           ×
         </button>
         <div className="mb-6 text-center">
-          <h2 className="text-2xl font-bold text-gray-900">Create Account</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Create Account</h2>
           <p className="mt-2 text-sm text-gray-600">
             Already have an account?{' '}
-            <Link href="/login" className="text-red-600 hover:text-red-500">
+            <Link href="/login" className="text-red-600 hover:text-red-500 font-medium">
               Sign in
             </Link>
           </p>
         </div>
 
         {showSuccess && (
-          <div className="mb-4 rounded-md bg-green-50 p-3 text-sm text-green-700">
+          <div className="mb-4 rounded-lg bg-green-50 p-3 text-sm text-green-700">
             Account created successfully. You can now sign in to purchase tanacoins.
           </div>
         )}
 
         {errors.general && (
-          <div className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-700">
+          <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">
             {errors.general}
           </div>
         )}
 
         {!showSuccess && (
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <label htmlFor="first_name" className="block text-sm font-medium text-gray-700">
@@ -311,9 +333,9 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
                   type="text"
                   value={formData.first_name}
                   onChange={handleChange}
-                  className={`mt-1 block w-full rounded-md border p-2 text-sm ${
+                  className={`mt-1 block w-full rounded-md border p-2 sm:p-3 text-sm sm:text-base ${
                     errors.first_name ? 'border-red-300' : 'border-gray-300'
-                  } focus:border-blue-500 focus:ring-blue-500`}
+                  } focus:border-blue-500 focus:ring-blue-500 focus:ring-2`}
                 />
                 {errors.first_name && <p className="mt-1 text-sm text-red-600">{errors.first_name}</p>}
               </div>
@@ -327,9 +349,9 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
                   type="text"
                   value={formData.last_name}
                   onChange={handleChange}
-                  className={`mt-1 block w-full rounded-md border p-2 text-sm ${
+                  className={`mt-1 block w-full rounded-md border p-2 sm:p-3 text-sm sm:text-base ${
                     errors.last_name ? 'border-red-300' : 'border-gray-300'
-                  } focus:border-blue-500 focus:ring-blue-500`}
+                  } focus:border-blue-500 focus:ring-blue-500 focus:ring-2`}
                 />
                 {errors.last_name && <p className="mt-1 text-sm text-red-600">{errors.last_name}</p>}
               </div>
@@ -346,9 +368,9 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
                   type="date"
                   value={formData.date_of_birth}
                   onChange={handleDateChange}
-                  className={`mt-1 block w-full rounded-md border p-2 text-sm ${
+                  className={`mt-1 block w-full rounded-md border p-2 sm:p-3 text-sm sm:text-base ${
                     errors.date_of_birth ? 'border-red-300' : 'border-gray-300'
-                  } focus:border-blue-500 focus:ring-blue-500`}
+                  } focus:border-blue-500 focus:ring-blue-500 focus:ring-2`}
                 />
                 {errors.date_of_birth && <p className="mt-1 text-sm text-red-600">{errors.date_of_birth}</p>}
               </div>
@@ -361,7 +383,7 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
                   name="gender"
                   value={formData.gender}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-sm focus:border-red-500 focus:ring-red-500"
+                  className="mt-1 block w-full rounded-md border border-gray-300 p-2 sm:p-3 text-sm sm:text-base focus:border-red-500 focus:ring-red-500 focus:ring-2"
                 >
                   <option value="">Select gender</option>
                   <option value="male">Male</option>
@@ -382,45 +404,11 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
-                className={`mt-1 block w-full rounded-md border p-2 text-sm ${
+                className={`mt-1 block w-full rounded-md border p-2 sm:p-3 text-sm sm:text-base ${
                   errors.email ? 'border-red-300' : 'border-gray-300'
-                } focus:border-blue-500 focus:ring-blue-500`}
+                } focus:border-blue-500 focus:ring-blue-500 focus:ring-2`}
               />
               {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
-            </div>
-
-            <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                Username *
-              </label>
-              <input
-                id="username"
-                name="username"
-                type="text"
-                value={formData.username}
-                onChange={handleChange}
-                className={`mt-1 block w-full rounded-md border p-2 text-sm ${
-                  errors.username ? 'border-Red-300' : 'border-gray-300'
-                } focus:border-blue-500 focus:ring-blue-500`}
-              />
-              {errors.username && <p className="mt-1 text-sm text-red-600">{errors.username}</p>}
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                  Password *
-                </label>
-                <input id="password" name="password" type="password" value={formData.password} onChange={handleChange} className={`mt-1 block w-full rounded-md border p-2 text-sm ${ errors.password ? 'border-red-300' : 'border-gray-300' } focus:border-red-500 focus:ring-red-500`} />
-                {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
-              </div>
-              <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-                  Confirm Password *
-                </label>
-                <input id="confirmPassword" name="confirmPassword" type="password" value={formData.confirmPassword} onChange={handleChange} className={`mt-1 block w-full rounded-md border p-2 text-sm ${ errors.confirmPassword ? 'border-red-300' : 'border-gray-300' } focus:border-red-500 focus:ring-red-500`} />
-                {errors.confirmPassword && <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>}
-              </div>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
@@ -429,12 +417,29 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
                   Phone Number *
                 </label>
                 <div className="mt-1 flex rounded-md">
-                  <select name="dialCode" value={formData.dialCode} onChange={handleChange} className="rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 py-2 text-sm text-gray-500">
-                    <option value="+852">+852</option>
-                    <option value="+1">+1</option>
-                    <option value="+44">+44</option>
+                  <select
+                    name="dialCode"
+                    value={formData.dialCode}
+                    onChange={handleChange}
+                    className="w-1/3 sm:w-1/4 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-2 sm:px-3 py-2 sm:py-3 text-sm sm:text-base text-gray-500 focus:border-red-500 focus:ring-red-500 focus:ring-2"
+                  >
+                    {countryList.map((country) => (
+                      <option key={country.code} value={country.dialCode}>
+                        {country.dialCode}
+                      </option>
+                    ))}
                   </select>
-                  <input id="phone_number" name="phone_number" type="tel" value={formData.phone_number} onChange={handlePhoneChange} className={`flex-1 rounded-r-md border p-2 text-sm ${ errors.phone_number ? 'border-red-300' : 'border-gray-300' } focus:border-red-500 focus:ring-red-500`} placeholder="Enter phone number"/>
+                  <input
+                    id="phone_number"
+                    name="phone_number"
+                    type="tel"
+                    value={formData.phone_number}
+                    onChange={handlePhoneChange}
+                    className={`flex-1 rounded-r-md border p-2 sm:p-3 text-sm sm:text-base ${
+                      errors.phone_number ? 'border-red-300' : 'border-gray-300'
+                    } focus:border-red-500 focus:ring-red-500 focus:ring-2`}
+                    placeholder="Enter phone number"
+                  />
                 </div>
                 {errors.phone_number && <p className="mt-1 text-sm text-red-600">{errors.phone_number}</p>}
               </div>
@@ -442,13 +447,19 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
                 <label htmlFor="country" className="block text-sm font-medium text-gray-700">
                   Country *
                 </label>
-                <select id="country" name="country" value={formData.country} onChange={handleChange} className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-sm focus:border-red-500 focus:ring-red-500">
+                <select
+                  id="country"
+                  name="country"
+                  value={formData.country}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border border-gray-300 p-2 sm:p-3 text-sm sm:text-base focus:border-red-500 focus:ring-red-500 focus:ring-2"
+                >
                   <option value="">Select a country</option>
-                  <option value="US">United States</option>
-                  <option value="GB">United Kingdom</option>
-                  <option value="CA">Canada</option>
-                  <option value="AU">Australia</option>
-                  <option value="HK">Hong Kong</option>
+                  {countryList.map((country) => (
+                    <option key={country.code} value={country.code}>
+                      {country.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -457,7 +468,16 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
               <label htmlFor="address_line1" className="block text-sm font-medium text-gray-700">
                 Address Line 1 *
               </label>
-              <input id="address_line1" name="address_line1" type="text" value={formData.address_line1} onChange={handleChange} className={`mt-1 block w-full rounded-md border p-2 text-sm ${ errors.address_line1 ? 'border-red-300' : 'border-gray-300' } focus:border-red-500 focus:ring-red-500`} />
+              <input
+                id="address_line1"
+                name="address_line1"
+                type="text"
+                value={formData.address_line1}
+                onChange={handleChange}
+                className={`mt-1 block w-full rounded-md border p-2 sm:p-3 text-sm sm:text-base ${
+                  errors.address_line1 ? 'border-red-300' : 'border-gray-300'
+                } focus:border-red-500 focus:ring-red-500 focus:ring-2`}
+              />
               {errors.address_line1 && <p className="mt-1 text-sm text-red-600">{errors.address_line1}</p>}
             </div>
 
@@ -465,7 +485,14 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
               <label htmlFor="address_line2" className="block text-sm font-medium text-gray-700">
                 Address Line 2
               </label>
-              <input id="address_line2" name="address_line2" type="text" value={formData.address_line2} onChange={handleChange} className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-sm focus:border-red-500 focus:ring-red-500"/>
+              <input
+                id="address_line2"
+                name="address_line2"
+                type="text"
+                value={formData.address_line2}
+                onChange={handleChange}
+                className="mt-1 block w-full rounded-md border border-gray-300 p-2 sm:p-3 text-sm sm:text-base focus:border-red-500 focus:ring-red-500 focus:ring-2"
+              />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
@@ -473,39 +500,114 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
                 <label htmlFor="city" className="block text-sm font-medium text-gray-700">
                   City *
                 </label>
-                <input id="city" name="city" type="text" value={formData.city} onChange={handleChange} className={`mt-1 block w-full rounded-md border p-2 text-sm ${ errors.city ? 'border-red-300' : 'border-gray-300' } focus:border-red-500 focus:ring-red-500`} />
+                <input
+                  id="city"
+                  name="city"
+                  type="text"
+                  value={formData.city}
+                  onChange={handleChange}
+                  className={`mt-1 block w-full rounded-md border p-2 sm:p-3 text-sm sm:text-base ${
+                    errors.city ? 'border-red-300' : 'border-gray-300'
+                  } focus:border-red-500 focus:ring-red-500 focus:ring-2`}
+                />
                 {errors.city && <p className="mt-1 text-sm text-red-600">{errors.city}</p>}
               </div>
               <div>
                 <label htmlFor="postal_code" className="block text-sm font-medium text-gray-700">
                   Postal/ZIP Code *
                 </label>
-                <input id="postal_code" name="postal_code" type="text" value={formData.postal_code} onChange={handleChange} className={`mt-1 block w-full rounded-md border p-2 text-sm ${ errors.postal_code ? 'border-red-300' : 'border-gray-300' } focus:border-red-500 focus:ring-red-500`} />
+                <input
+                  id="postal_code"
+                  name="postal_code"
+                  type="text"
+                  value={formData.postal_code}
+                  onChange={handleChange}
+                  className={`mt-1 block w-full rounded-md border p-2 sm:p-3 text-sm sm:text-base ${
+                    errors.postal_code ? 'border-red-300' : 'border-gray-300'
+                  } focus:border-red-500 focus:ring-red-500 focus:ring-2`}
+                />
                 {errors.postal_code && <p className="mt-1 text-sm text-red-600">{errors.postal_code}</p>}
               </div>
             </div>
 
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                  Password *
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className={`mt-1 block w-full rounded-md border p-2 sm:p-3 text-sm sm:text-base ${
+                    errors.password ? 'border-red-300' : 'border-gray-300'
+                  } focus:border-red-500 focus:ring-red-500 focus:ring-2`}
+                />
+                {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
+              </div>
+              <div>
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                  Confirm Password *
+                </label>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className={`mt-1 block w-full rounded-md border p-2 sm:p-3 text-sm sm:text-base ${
+                    errors.confirmPassword ? 'border-red-300' : 'border-gray-300'
+                  } focus:border-red-500 focus:ring-red-500 focus:ring-2`}
+                />
+                {errors.confirmPassword && <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>}
+              </div>
+            </div>
+
             <div className="flex items-start">
-              <input id="agreeToTerms" name="agreeToTerms" type="checkbox" checked={formData.agreeToTerms} onChange={handleChange} className={`h-4 w-4 rounded ${ errors.agreeToTerms ? 'border-red-500' : 'border-gray-300' } text-red-600 focus:ring-red-500`} />
+              <input
+                id="agreeToTerms"
+                name="agreeToTerms"
+                type="checkbox"
+                checked={formData.agreeToTerms}
+                onChange={handleChange}
+                className={`h-4 w-4 rounded border ${
+                  errors.agreeToTerms ? 'border-red-500' : 'border-gray-300'
+                } text-red-600 focus:ring-red-500 focus:ring-2 mt-1`}
+              />
               <label htmlFor="agreeToTerms" className="ml-2 text-sm text-gray-700">
                 I agree to the{' '}
-                <button type="button" onClick={() => setShowTerms(true)} className="text-red-600 hover:text-red-500">
+                <button type="button" onClick={() => setShowTerms(true)} className="text-red-600 hover:text-red-500 font-medium">
                   Terms of Service
                 </button>{' '}
                 and{' '}
-                <button type="button" onClick={() => setShowTerms(true)} className="text-red-600 hover:text-red-500">
+                <button type="button" onClick={() => setShowTerms(true)} className="text-red-600 hover:text-red-500 font-medium">
                   Privacy Policy
                 </button>
               </label>
               {errors.agreeToTerms && <p className="mt-1 text-sm text-red-600">{errors.agreeToTerms}</p>}
             </div>
 
-            <button type="submit" disabled={isLoading} className="w-full rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full rounded-md bg-red-600 px-4 py-2 sm:py-3 text-sm sm:text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50"
+            >
               {isLoading ? (
                 <div className="flex items-center justify-center space-x-2">
-                  <svg className="h-5 w-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <svg
+                    className="h-5 w-5 animate-spin text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
                   </svg>
                   <span>Processing...</span>
                 </div>
@@ -517,11 +619,11 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
         )}
 
         {showTerms && (
-          <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/50 p-4">
-            <div className="relative w-full max-w-2xl rounded-lg bg-white p-6 shadow-xl">
+          <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/70 p-4 sm:p-6">
+            <div className="relative w-full max-w-lg sm:max-w-2xl rounded-xl bg-white p-4 sm:p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
               <div className="mb-4">
-                <h3 className="text-lg font-medium text-gray-900">Terms and Conditions</h3>
-                <div className="mt-4 max-h-96 overflow-y-auto text-sm text-gray-500">
+                <h3 className="text-lg sm:text-xl font-medium text-gray-900">Terms and Conditions</h3>
+                <div className="mt-4 max-h-[60vh] overflow-y-auto text-sm text-gray-500">
                   <p className="mb-4">
                     Welcome to Hong Kong Online Bank. These terms outline the rules for using our services.
                   </p>
@@ -543,11 +645,11 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
                   </p>
                 </div>
               </div>
-              <div className="flex justify-end gap-2">
+              <div className="flex flex-col sm:flex-row justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setShowTerms(false)}
-                  className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  className="w-full sm:w-auto rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                 >
                   Close
                 </button>
@@ -558,7 +660,7 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
                     setFormData((prev) => ({ ...prev, agreeToTerms: true }));
                     setErrors((prev) => ({ ...prev, agreeToTerms: undefined }));
                   }}
-                  className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+                  className="w-full sm:w-auto rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                 >
                   I Agree
                 </button>

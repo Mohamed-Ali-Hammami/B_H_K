@@ -11,11 +11,12 @@
   "dependencies": {
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
-
     "autoprefixer": "^10.4.21",
     "framer-motion": "^12.18.1",
     "google-libphonenumber": "^3.2.42",
+    "i18n-iso-countries": "^7.14.0",
     "jwt-decode": "^4.0.0",
+    "libphonenumber-js": "^1.12.9",
     "lucide-react": "^0.518.0",
     "next": "^15.1.2",
     "pino-pretty": "^13.0.0",

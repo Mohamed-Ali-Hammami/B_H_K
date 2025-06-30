@@ -5,13 +5,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { FiMenu, FiX, FiMail } from 'react-icons/fi';
-import { useAuth } from '../context/AuthContext';
 import ContactUsForm from './ContactUsForm';
-import DashboardSidebar from './DashboardSidebar';
 import UserAvatarDropdown from './UserAvatarDropdown';
 
 const Navbar = () => {
-  const { isLoggedIn } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [contactFormOpen, setContactFormOpen] = useState(false);
   const pathname = usePathname();
@@ -26,7 +23,7 @@ const Navbar = () => {
   const toggleContactForm = () => setContactFormOpen(!contactFormOpen);
 
   return (
-    <nav className="bg-white shadow-sm">
+    <nav className="bg-white shadow-sm relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
@@ -53,10 +50,11 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="-mr-2 flex items-center md:hidden">
+          <div className="flex items-center md:hidden">
             <button
               onClick={toggleMobileMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500"
+              className="absolute top-4 left-1/2 transform -translate-x-1/2 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500"
+              aria-label="Toggle main menu"
             >
               <span className="sr-only">Open main menu</span>
               {mobileMenuOpen ? <FiX className="h-6 w-6" /> : <FiMenu className="h-6 w-6" />}
@@ -80,9 +78,6 @@ const Navbar = () => {
       {mobileMenuOpen && (
         <div className="md:hidden">
           <div className="pt-2 pb-3 space-y-1">
-            <DashboardSidebar activeTab={''} onTabChange={function (tab: string): void {
-              throw new Error('Function not implemented.');
-            } } />
             {navItems.map((item) => (
               <Link
                 key={item.name}

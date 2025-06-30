@@ -1,11 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-
-interface DashboardSidebarProps {
-  activeTab: string;
-  onTabChange: (tab: string) => void;
-}
 import { 
   FiHome, 
   FiCreditCard, 
@@ -25,6 +20,18 @@ import { BsCreditCard2Front, BsShieldLock } from "react-icons/bs";
 import { RiExchangeDollarLine } from "react-icons/ri";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
+
+interface UserData {
+  first_name: string;
+  last_name: string;
+  email: string;
+}
+
+interface DashboardSidebarProps {
+  activeTab: string;
+  onTabChange: (tab: string) => void;
+  userData: UserData | null; // Add userData prop
+}
 
 const navItems = [
   { 
@@ -71,7 +78,7 @@ const navItems = [
   },
 ];
 
-const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ activeTab, onTabChange }) => {
+const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ activeTab, onTabChange, userData }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -106,7 +113,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ activeTab, onTabCha
       {/* Mobile menu button */}
       <button
         onClick={toggleSidebar}
-        className="fixed top-4 left-4 z-50 p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500 lg:hidden"
+        className="fixed top-4 right-4 z-50 p-3 rounded-full bg-white shadow-md text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500 lg:hidden"
         aria-label="Toggle menu"
       >
         {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
@@ -207,11 +214,15 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ activeTab, onTabCha
           <div className="p-4 border-t border-gray-200">
             <div className="flex items-center space-x-3 p-3 rounded-lg bg-gray-50">
               <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                <span className="text-red-600 font-medium">JD</span>
+                <span className="text-red-600 font-medium">
+                  {userData ? `${userData.first_name[0]}${userData.last_name[0]}`.toUpperCase() : 'JD'}
+                </span>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">John Doe</p>
-                <p className="text-xs text-gray-500 truncate">Premium Client</p>
+                <p className="text-sm font-medium text-gray-900 truncate">
+                  {userData ? `${userData.first_name} ${userData.last_name}` : 'Guest User'}
+                </p>
+                <p className="text-xs text-gray-500 truncate">Client</p>
               </div>
               <button className="text-gray-400 hover:text-gray-600">
                 <FiLogOut className="w-5 h-5" />
