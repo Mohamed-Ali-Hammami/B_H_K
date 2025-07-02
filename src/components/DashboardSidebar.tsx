@@ -44,8 +44,8 @@ const navItems = [
     href: '/transfers', 
     icon: <FaExchangeAlt className="w-5 h-5" />,
     submenu: [
-      { name: 'Between My Accounts', href: '/transfers/internal' },
-      { name: 'International Transfer', href: '/transfers/international' },
+      { name: 'Between My Accounts', href: '/transfers' },
+      { name: 'International Transfer', href: '/transfers/InternationalTransfers' },
     ]
   },
   { 
@@ -71,9 +71,9 @@ const navItems = [
     href: '/loans', 
     icon: <RiExchangeDollarLine className="w-5 h-5" />,
     submenu: [
-      { name: 'Apply for Loan', href: '/loans/apply' },
+      { name: 'Apply for Loan', href: '/loans/applyloan' },
       { name: 'My Loans', href: '/loans' },
-      { name: 'Loan Calculator', href: '/loans/calculator' },
+      { name: 'Loan Calculator', href: '/loans/loancalculator' },
     ]
   },
 ];

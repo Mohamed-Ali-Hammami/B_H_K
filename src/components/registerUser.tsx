@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
@@ -16,6 +16,32 @@ import en from 'i18n-iso-countries/langs/en.json';
 countries.registerLocale(en);
 
 const phoneUtil = PhoneNumberUtil.getInstance();
+
+// Function to get flag emoji from country code
+const getFlagEmoji = (countryCode: string) => {
+  const codePoints = countryCode
+    .toUpperCase()
+    .split('')
+    .map(char => 127397 + char.charCodeAt(0));
+  return String.fromCodePoint(...codePoints);
+};
+
+// Generate country list with dial codes and flags
+const countryList = Object.entries(countries.getNames('en', { select: 'official' }))
+  .map(([code, name]) => {
+    try {
+      return {
+        code: code as CountryCode,
+        name,
+        dialCode: `+${getCountryCallingCode(code as CountryCode)}`,
+        flag: getFlagEmoji(code),
+      };
+    } catch {
+      return null;
+    }
+  })
+  .filter((item): item is { code: CountryCode; name: string; dialCode: string; flag: string } => item !== null)
+  .sort((a, b) => a.name.localeCompare(b.name));
 
 interface FormData {
   first_name: string;
@@ -56,20 +82,6 @@ interface RegisterFormProps {
   onClose: () => void;
 }
 
-// Generate country list with dial codes
-const countryList = Object.entries(countries.getNames('en', { select: 'official' })).map(([code, name]) => {
-  try {
-    return {
-      code: code as CountryCode,
-      name,
-      dialCode: `+${getCountryCallingCode(code as CountryCode)}`,
-    };
-  } catch {
-    return null;
-  }
-}).filter((item): item is { code: CountryCode; name: string; dialCode: string } => item !== null)
-  .sort((a, b) => a.name.localeCompare(b.name));
-
 const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
   const router = useRouter();
   const { loginWithCredentials } = useAuth();
@@ -78,6 +90,11 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
   const [showKyc, setShowKyc] = useState(false);
   const [tempUserId, setTempUserId] = useState<string | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [countrySearch, setCountrySearch] = useState('');
+  const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
+  const [focusedCountryIndex, setFocusedCountryIndex] = useState(-1);
+  const countryDropdownRef = useRef<HTMLDivElement>(null);
+  
   const [formData, setFormData] = useState<FormData>({
     first_name: '',
     last_name: '',
@@ -98,6 +115,54 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
   });
   const [errors, setErrors] = useState<ErrorState>({});
   const apiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+  // Filter countries based on search
+  const filteredCountries = countryList.filter(
+    country =>
+      country.name.toLowerCase().includes(countrySearch.toLowerCase()) ||
+      country.dialCode.includes(countrySearch)
+  );
+
+  // Handle clicks outside dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (countryDropdownRef.current && !countryDropdownRef.current.contains(event.target as Node)) {
+        setIsCountryDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Handle keyboard navigation
+  const handleCountryKeyDown = (e: React.KeyboardEvent) => {
+    if (!isCountryDropdownOpen) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setFocusedCountryIndex(prev => 
+        Math.min(prev + 1, filteredCountries.length - 1)
+      );
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setFocusedCountryIndex(prev => Math.max(prev - 1, -1));
+    } else if (e.key === 'Enter' && focusedCountryIndex >= 0) {
+      e.preventDefault();
+      const selectedCountry = filteredCountries[focusedCountryIndex];
+      setFormData(prev => ({
+        ...prev,
+        country: selectedCountry.code,
+        dialCode: selectedCountry.dialCode,
+      }));
+      setIsCountryDropdownOpen(false);
+      setCountrySearch('');
+      setFocusedCountryIndex(-1);
+    } else if (e.key === 'Escape') {
+      setIsCountryDropdownOpen(false);
+      setCountrySearch('');
+      setFocusedCountryIndex(-1);
+    }
+  };
 
   const validateForm = (): boolean => {
     const newErrors: ErrorState = {};
@@ -178,6 +243,9 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
         country: value,
         dialCode: selectedCountry ? selectedCountry.dialCode : prev.dialCode,
       }));
+      setIsCountryDropdownOpen(false);
+      setCountrySearch('');
+      setFocusedCountryIndex(-1);
     } else {
       setFormData((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
     }
@@ -417,18 +485,50 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
                   Phone Number *
                 </label>
                 <div className="mt-1 flex rounded-md">
-                  <select
-                    name="dialCode"
-                    value={formData.dialCode}
-                    onChange={handleChange}
-                    className="w-1/3 sm:w-1/4 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-2 sm:px-3 py-2 sm:py-3 text-sm sm:text-base text-gray-500 focus:border-red-500 focus:ring-red-500 focus:ring-2"
-                  >
-                    {countryList.map((country) => (
-                      <option key={country.code} value={country.dialCode}>
-                        {country.dialCode}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="relative w-1/3 sm:w-1/3" ref={countryDropdownRef}>
+                    <input
+                      type="text"
+                      value={countrySearch || formData.dialCode}
+                      onChange={(e) => {
+                        setCountrySearch(e.target.value);
+                        setIsCountryDropdownOpen(true);
+                      }}
+                      onFocus={() => setIsCountryDropdownOpen(true)}
+                      onKeyDown={handleCountryKeyDown}
+                      className="w-full rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-2 sm:px-3 py-2 sm:py-3 text-sm sm:text-base text-gray-700 focus:border-red-500 focus:ring-red-500 focus:ring-2"
+                      placeholder="+852"
+                    />
+                    {isCountryDropdownOpen && (
+                      <div className="absolute z-10 w-[300px] max-h-64 overflow-y-auto bg-white border border-gray-300 rounded-b-md shadow-lg">
+                        {filteredCountries.length === 0 ? (
+                          <div className="p-2 text-sm text-gray-500">No results found</div>
+                        ) : (
+                          filteredCountries.map((country, index) => (
+                            <div
+                              key={country.code}
+                              className={`p-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2 text-sm ${
+                                index === focusedCountryIndex ? 'bg-gray-100' : ''
+                              }`}
+                              onClick={() => {
+                                setFormData(prev => ({
+                                  ...prev,
+                                  dialCode: country.dialCode,
+                                  country: country.code,
+                                }));
+                                setIsCountryDropdownOpen(false);
+                                setCountrySearch('');
+                                setFocusedCountryIndex(-1);
+                              }}
+                            >
+                              <span>{country.flag}</span>
+                              <span className="flex-1 truncate">{country.name}</span>
+                              <span className="text-gray-500 whitespace-nowrap">{country.dialCode}</span>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    )}
+                  </div>
                   <input
                     id="phone_number"
                     name="phone_number"
@@ -457,7 +557,7 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
                   <option value="">Select a country</option>
                   {countryList.map((country) => (
                     <option key={country.code} value={country.code}>
-                      {country.name}
+                      {`${country.flag} ${country.name}`}
                     </option>
                   ))}
                 </select>
