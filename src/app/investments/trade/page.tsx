@@ -34,11 +34,7 @@ const Trade: React.FC = () => {
             </button>
           </div>
         </main>
-        <footer className="bg-red-600 text-white py-4">
-          <div className="container mx-auto px-4 text-center">
-            <p>© 2025 CryptoBank. All rights reserved.</p>
-          </div>
-        </footer>
+
       </div>
     </div>
   );
