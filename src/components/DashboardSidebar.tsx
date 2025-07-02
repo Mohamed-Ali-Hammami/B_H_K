@@ -141,7 +141,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ activeTab, onTabCha
               <div className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center">
                 <span className="text-white font-bold">HK</span>
               </div>
-              <span className="text-xl font-semibold text-gray-800">Hong Kong Bank</span>
+              <span className="text-xl font-semibold text-gray-800">NEAT Bank</span>
             </Link>
             <button 
               onClick={toggleSidebar} 

@@ -23,27 +23,41 @@ const Navbar = () => {
   const toggleContactForm = () => setContactFormOpen(!contactFormOpen);
 
   return (
-    <nav className="bg-white shadow-sm relative z-40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-40">
-        <div className="flex justify-between h-16">
-          <div className="flex">
+    <nav className="bg-white shadow-lg sticky top-0 z-50 transition-shadow duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center">
             <div className="flex-shrink-0 flex items-center">
               <Link href="/" className="flex items-center">
-                <Image src="/images/your-logo.jpg" alt="H.K.Bank" width={100} height={50} />
+                <Image
+                  src="/images/your-logo.jpg"
+                  alt="H.K.Bank"
+                  width={100}
+                  height={50}
+                  className="object-contain"
+                />
               </Link>
+              <span className="ml-3 text-2xl font-bold text-gray-900 tracking-tight">
+                NEAT
+              </span>
             </div>
-            <div className="hidden md:ml-10 md:flex md:items-center md:space-x-8">
+            <div className="hidden md:ml-12 md:flex md:items-center md:space-x-10">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`${
+                  className={`relative text-base font-medium transition-all duration-200 ${
                     pathname === item.href
-                      ? 'border-red-500 text-gray-900'
-                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-                  } inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
+                      ? 'text-red-600 border-b-2 border-red-600'
+                      : 'text-gray-600 hover:text-red-600 hover:border-b-2 hover:border-red-300'
+                  } py-2`}
                 >
                   {item.name}
+                  <span
+                    className={`absolute bottom-0 left-0 h-0.5 bg-red-600 transition-all duration-300 ${
+                      pathname === item.href ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`}
+                  ></span>
                 </Link>
               ))}
             </div>
@@ -53,7 +67,7 @@ const Navbar = () => {
           <div className="flex items-center md:hidden">
             <button
               onClick={toggleMobileMenu}
-              className="absolute top-4 left-1/2 transform -translate-x-1/2 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500"
+              className="absolute top-4 left-1/2 transform -translate-x-1/2 p-2 rounded-lg text-gray-600 hover:text-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors duration-200"
               aria-label="Toggle main menu"
             >
               <span className="sr-only">Open main menu</span>
@@ -62,12 +76,12 @@ const Navbar = () => {
           </div>
 
           {/* Desktop right side buttons */}
-          <div className="hidden md:ml-4 md:flex md:items-center md:space-x-4">
+          <div className="hidden md:ml-6 md:flex md:items-center md:space-x-6">
             <button
               onClick={toggleContactForm}
-              className="text-gray-500 hover:text-gray-700 inline-flex items-center px-3 py-2 text-sm font-medium rounded-md hover:bg-gray-50"
+              className="flex items-center px-4 py-2 text-base font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-red-50 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200"
             >
-              <FiMail className="mr-1" /> Contactez-nous
+              <FiMail className="mr-2 h-5 w-5" /> Contactez-nous
             </button>
             <UserAvatarDropdown />
           </div>
@@ -76,31 +90,32 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden">
-          <div className="pt-2 pb-3 space-y-1">
+        <div className="md:hidden bg-white shadow-md absolute w-full top-16 left-0 z-40 transition-all duration-300 ease-in-out">
+          <div className="pt-4 pb-6 space-y-2">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`${
+                className={`block px-6 py-3 text-base font-medium transition-all duration-200 ${
                   pathname === item.href
                     ? 'bg-red-50 text-red-600'
-                    : 'text-gray-500 hover:text-gray-800 hover:bg-gray-100'
-                } block px-4 py-2 text-base font-medium`}
+                    : 'text-gray-600 hover:bg-red-50 hover:text-red-600'
+                }`}
+                onClick={toggleMobileMenu}
               >
                 {item.name}
               </Link>
             ))}
-            <div className="border-t border-gray-200 pt-4 pb-3">
-              <div className="px-4">
+            <div className="border-t border-gray-200 pt-4">
+              <div className="px-6">
                 <button
                   onClick={toggleContactForm}
-                  className="w-full text-left text-gray-500 hover:text-gray-800 hover:bg-gray-100 block px-4 py-2 text-base font-medium"
+                  className="w-full text-left flex items-center px-4 py-3 text-base font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 transition-all duration-200"
                 >
-                  <FiMail className="inline mr-2" /> Contactez-nous
+                  <FiMail className="mr-2 h-5 w-5" /> Contactez-nous
                 </button>
               </div>
-              <div className="px-4">
+              <div className="px-6 mt-2">
                 <UserAvatarDropdown />
               </div>
             </div>
@@ -110,14 +125,14 @@ const Navbar = () => {
 
       {/* Contact Form Modal */}
       {contactFormOpen && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-medium text-gray-900">Contactez-nous</h3>
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-60 flex items-center justify-center z-50 p-4 transition-opacity duration-300">
+          <div className="bg-white rounded-xl max-w-lg w-full p-8 max-h-[90vh] overflow-y-auto shadow-2xl transform transition-all duration-300">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-semibold text-gray-900">Contactez-nous</h3>
               <button
                 type="button"
                 onClick={toggleContactForm}
-                className="text-gray-400 hover:text-gray-500"
+                className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors duration-200"
               >
                 <span className="sr-only">Close</span>
                 <FiX className="h-6 w-6" />
