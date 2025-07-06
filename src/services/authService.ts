@@ -165,21 +165,44 @@ export interface KycStatus {
   next_steps?: string[];
 }
 
-export const getKycStatus = async (token: string): Promise<KycStatus> => {
+interface KycStatusParams {
+  userId?: string;
+  tempUserId?: string;
+}
+
+interface KycStatusResponse {
+  status: 'not_started' | 'in_progress' | 'pending' | 'approved' | 'rejected';
+  documents: KycDocument[];
+  required_documents: string[];
+  next_steps?: string[];
+}
+
+export const getKycStatus = async (params: KycStatusParams | string): Promise<KycStatusResponse> => {
   try {
-    const response = await fetch(`${API_URL}/api/kyc/status`, {
+    // Handle backward compatibility with string userId
+    const userId = typeof params === 'string' ? params : params.userId;
+    const tempUserId = typeof params === 'string' ? undefined : params.tempUserId;
+    
+    // Build query parameters
+    const queryParams = new URLSearchParams();
+    if (userId) queryParams.append('user_id', userId);
+    if (tempUserId) queryParams.append('temp_user_id', tempUserId);
+    
+    const url = `${API_URL}/api/kyc/status?${queryParams.toString()}`;
+    
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
       },
     });
 
-    const data = await response.json();
-
     if (!response.ok) {
-      throw new Error(data.error || 'Failed to fetch KYC status');
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to fetch KYC status');
     }
+
+    const data = await response.json();
 
     // Determine required documents based on the user's country/region
     // This should be dynamically determined based on user's location

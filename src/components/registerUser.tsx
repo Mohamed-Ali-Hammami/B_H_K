@@ -279,6 +279,26 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  const linkKycDocuments = async (tempUserId: string, newUserId: string) => {
+    try {
+      const response = await fetch(`${apiUrl}/api/kyc/link-documents`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          temp_user_id: tempUserId,
+          new_user_id: newUserId
+        })
+      });
+      
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Failed to link KYC documents');
+      return true;
+    } catch (error) {
+      console.error('Error linking KYC documents:', error);
+      return false; // Don't fail the registration if linking fails
+    }
+  };
+
   const handleRegistration = async () => {
     try {
       setIsLoading(true);
@@ -296,6 +316,11 @@ const RegistrationForm: React.FC<RegisterFormProps> = ({ isOpen, onClose }) => {
 
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || 'Registration failed');
+
+      // If registration is successful, try to link KYC documents if any exist
+      if (data.user && data.user.id) {
+        await linkKycDocuments(tempUserId, data.user.id);
+      }
 
       await loginWithCredentials({ identifier: formData.email, password: formData.password });
       setShowSuccess(true);
